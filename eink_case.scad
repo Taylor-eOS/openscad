@@ -8,14 +8,14 @@ outer_x = display_x + wall + print_margin * 2 + extra_space * 2;
 outer_y = display_y + wall + print_margin * 2 + extra_space * 2;
 inner_x = outer_x - 2 * wall;
 inner_y = outer_y - 2 * wall;
-outer_height_z = 20;
+outer_height_z = 48;
 display_window = 27.6;
 epsilon = 0.01;
-window_y_offset = 2.6;
-pin_diameter = 3.15;
+window_y_offset = 2.8;
+pin_diameter = 3;
 pin_height = 4;
-pin_y_top_offset = 5;
-pin_y_bottom_offset = 11.56;
+pin_y_top_offset = 5.4;
+pin_y_bottom_offset = 11.16;
 pin_x_offset = 0.2;
 pin_facets = 32;
 make_flat = false;
@@ -25,7 +25,7 @@ module outer_shell() {
 }
 
 module inner_cavity() {
-    translate([wall, wall, wall])
+    translate([wall, wall, wall + nozzle])
         cube([inner_x, inner_y, outer_height_z]);
 }
 

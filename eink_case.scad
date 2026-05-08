@@ -15,8 +15,8 @@ window_y_offset = 2.8;
 pin_diameter = 3;
 pin_height = 4;
 pin_y_top_offset = 5.4;
-pin_y_bottom_offset = 11.16;
-pin_x_offset = 0.2;
+pin_y_bottom_offset = 11.2;
+pin_corner_offset = 0.2;
 pin_facets = 32;
 make_flat = false;
 
@@ -55,8 +55,8 @@ module pins() {
     window_x_right = (outer_x + display_window) / 2;
     window_y_bot = ((outer_y - display_window) / 2) + window_y_offset;
     window_y_top = ((outer_y + display_window) / 2) + window_y_offset;
-    pin_x_left = window_x_left + pin_x_offset;
-    pin_x_right = window_x_right - pin_x_offset;
+    pin_x_left = window_x_left + pin_corner_offset;
+    pin_x_right = window_x_right - pin_corner_offset;
     for (px = [pin_x_left, pin_x_right]) {
         translate([px, window_y_bot - pin_y_bottom_offset, wall])
             chamfered_pin(pin_diameter, pin_height);

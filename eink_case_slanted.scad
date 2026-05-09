@@ -6,9 +6,10 @@ print_margin = 0.15;
 extra_space = 2;
 outer_x = display_x + wall + print_margin * 2 + extra_space * 2;
 outer_y = display_y + wall + print_margin * 2 + extra_space * 2;
+outer_height_z = 48;
+slant_offset = 8;
 inner_x = outer_x - 2 * wall;
 inner_y = outer_y - 2 * wall;
-outer_height_z = 48;
 display_window = 27.6;
 epsilon = 0.01;
 window_y_offset = 2.8;
@@ -18,15 +19,23 @@ pin_y_top_offset = 5.4;
 pin_y_bottom_offset = 11.2;
 pin_corner_offset = 0.2;
 pin_facets = 32;
-make_flat = false;
+
+module slanted_body(w, d, h, slant) {
+    hull() {
+        translate([0, 0, 0])
+            cube([w, d, epsilon]);
+        translate([slant / 2, slant / 2, h - epsilon])
+            cube([w - slant, d - slant, epsilon]);
+    }
+}
 
 module outer_shell() {
-    cube([outer_x, outer_y, outer_height_z]);
+    slanted_body(outer_x, outer_y, outer_height_z, slant_offset);
 }
 
 module inner_cavity() {
-    translate([wall, wall, wall + nozzle])
-        cube([inner_x, inner_y, outer_height_z]);
+    translate([wall, wall, wall])
+        slanted_body(inner_x, inner_y, outer_height_z, slant_offset);
 }
 
 module eink_window() {
@@ -65,22 +74,11 @@ module pins() {
     }
 }
 
-module conditional_projection(apply) {
-    if (apply) {
-        projection(cut = true) translate([0, 0, -1]) children();
-    } else {
-        children();
+union() {
+    difference() {
+        outer_shell();
+        inner_cavity();
+        eink_window();
     }
-}
-
-conditional_projection(make_flat) {
-    union() {
-        difference() {
-            outer_shell();
-            inner_cavity();
-            eink_window();
-        }
-        pins();
-        if (make_flat) { eink_window(); }
-    }
+    pins();
 }

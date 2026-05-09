@@ -18,15 +18,31 @@ pin_y_top_offset = 5.4;
 pin_y_bottom_offset = 11.2;
 pin_corner_offset = 0.2;
 pin_facets = 32;
-make_flat = false;
+corner_r = 4;
+shell_fn = 64;
+front_dome_r = 180;
+
+module rounded_footprint(x, y, r) {
+    offset(r = r, $fn = shell_fn)
+        offset(r = -r)
+            square([x, y]);
+}
 
 module outer_shell() {
-    cube([outer_x, outer_y, outer_height_z]);
+    dome_z_offset = front_dome_r - sqrt(front_dome_r * front_dome_r - pow(min(outer_x, outer_y) / 2, 2));
+    intersection() {
+        translate([0, 0, -dome_z_offset])
+            sphere(r = front_dome_r + outer_height_z, $fn = shell_fn * 2);
+        linear_extrude(height = outer_height_z + dome_z_offset + 1)
+            rounded_footprint(outer_x, outer_y, corner_r);
+        cube([outer_x, outer_y, outer_height_z]);
+    }
 }
 
 module inner_cavity() {
     translate([wall, wall, wall + nozzle])
-        cube([inner_x, inner_y, outer_height_z]);
+        linear_extrude(height = outer_height_z)
+            rounded_footprint(inner_x, inner_y, corner_r - wall);
 }
 
 module eink_window() {
@@ -65,22 +81,11 @@ module pins() {
     }
 }
 
-module conditional_projection(apply) {
-    if (apply) {
-        projection(cut = true) translate([0, 0, -1]) children();
-    } else {
-        children();
+union() {
+    difference() {
+        outer_shell();
+        inner_cavity();
+        eink_window();
     }
-}
-
-conditional_projection(make_flat) {
-    union() {
-        difference() {
-            outer_shell();
-            inner_cavity();
-            eink_window();
-        }
-        pins();
-        if (make_flat) { eink_window(); }
-    }
+    pins();
 }

@@ -11,7 +11,11 @@ usb_h = 5.8 + tolerance;
 usb_r = 2.9;
 usb_offset_y = 10.0;
 usb_ring_h = 0.4;
+hole_w = 14.0;
+hole_h = 10.0;
+hole_offset_y = 10.0;
 eps = 0.01;
+include_sensor_hole = true;
 
 module usb_shape(extra_r = 0, height = base_wall) {
     hull() {
@@ -52,15 +56,28 @@ module usb_reinforcement() {
         usb_shape(base_wall, usb_ring_h + eps);
 }
 
+module sensor_hole() {
+    translate([(outer_x - hole_w) / 2, outer_y - hole_offset_y - hole_h, -eps])
+        cube([hole_w, hole_h, base_wall + 2 * eps]);
+}
+
+module lid_subtractions() {
+    translate([outer_x / 2, usb_offset_y, -eps])
+        usb_shape(0, base_wall + usb_ring_h + 2 * eps);
+    if (include_sensor_hole) { sensor_hole(); }
+    
+}
+
+module lid_additions() {
+    lid_base();
+    lid_frame();
+    usb_reinforcement();
+}
+
 module lid_assembly() {
     difference() {
-        union() {
-            lid_base();
-            lid_frame();
-            usb_reinforcement();
-        }
-        translate([outer_x / 2, usb_offset_y, -eps])
-            usb_shape(0, base_wall + usb_ring_h + 2 * eps);
+        lid_additions();
+        lid_subtractions();
     }
 }
 

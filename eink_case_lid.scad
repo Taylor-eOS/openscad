@@ -7,9 +7,9 @@ base_thickness = 1.2;
 lid_total_h = 4.0;
 plug_wall_thickness = 2.0;
 tolerance = 0.2;
-usb_w = 9.8 + tolerance;
-usb_h = 5.8 + tolerance;
-usb_r = 2.9;
+usb_w = 10.2 + tolerance;
+usb_h = 6.0 + tolerance;
+usb_rad = 3.0;
 usb_offset_y = 10.0;
 usb_ring_h = 0.4;
 hole_w = 14.0;
@@ -22,11 +22,11 @@ module usb_shape(extra_r = 0, height = base_thickness) {
     hull() {
         for (i = [-1, 1], j = [-1, 1]) {
             translate([
-                i * (usb_w / 2 - usb_r), 
-                j * (usb_h / 2 - usb_r), 
+                i * (usb_w / 2 - usb_rad), 
+                j * (usb_h / 2 - usb_rad), 
                 0
             ])
-            cylinder(h = height, r = usb_r + extra_r, center = false, $fn = 32);
+            cylinder(h = height, r = usb_rad + extra_r, center = false, $fn = 32);
         }
     }
 }

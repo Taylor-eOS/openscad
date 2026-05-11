@@ -10,10 +10,29 @@ module pin_cutout() {
         cube([cutout_width, cutout_depth + 0.1, back_th + 0.2], center=true);
 }
 
+module component_recess(x, y) {
+    translate([x, y, 0.1])
+        cylinder(h = 0.2, d = recess_dia, center = true, $fn = 32);
+}
+
+module lid_clearance_balls() {
+    for (i = [1:3]) {
+        translate([0, (tab_size / 4) * i, -tab_depth / 2])
+            sphere(d = bump_dia, $fn = 12);
+    }
+}
+
 module corner_tab() {
-    translate([0, 0, -tab_depth])
-    linear_extrude(height = tab_depth)
-    polygon(points = [[0, 0], [tab_size, 0], [0, tab_size]]);
+    union() {
+        translate([0, 0, -tab_depth])
+            linear_extrude(height = tab_depth)
+                polygon(points = [[0, 0], [tab_size, 0], [0, tab_size]]);
+        for (i = [1:3]) {
+            translate([(tab_size / 4) * i, 0, -tab_depth / 2])
+                sphere(d = bump_dia, $fn = 24);
+        }
+        lid_clearance_balls();
+    }
 }
 
 module lid_corner_tabs() {
@@ -31,6 +50,7 @@ module base_plate() {
     difference() {
         lid_base();
         pin_cutout();
+        component_recess(recess_pos_x, recess_pos_y);
     }
 }
 
@@ -41,4 +61,6 @@ module lid_assembly() {
     }
 }
 
+//projection(cut = true)
+//translate([0, 0, tab_depth/2])
 lid_assembly();

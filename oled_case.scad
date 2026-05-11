@@ -19,7 +19,7 @@ pocket_center_y = (top_pin_y + bottom_pin_y) / 2;
 outer_x = inner_x + (wall_thickness * 2);
 outer_y = inner_y + (wall_thickness * 2);
 pin_diameter = 2.5;
-pin_height = 3.8;
+pin_height = 3.5;
 
 module outer_shell() {
     translate([0, pocket_center_y, case_height / 2])
@@ -43,15 +43,26 @@ module mounting_pins() {
     }
 }
 
-make_flat = false;
-//projection(cut = true)
-//translate([0, 0, -1])
-union() {
-    difference() {
-        outer_shell();
-        inner_pocket();
-        display_window();
+module conditional_projection(apply) {
+    if (apply) {
+        projection(cut = true) translate([0, 0, -1]) children();
+    } else {
+        children();
     }
-    mounting_pins();
-    if(make_flat) { display_window(); }
 }
+
+module display_case_assembly(make_flat = false) {
+    conditional_projection(make_flat) {
+        union() {
+            difference() {
+                outer_shell();
+                inner_pocket();
+                display_window();
+            }
+            mounting_pins();
+            if (make_flat) { display_window(); }
+        }
+    }
+}
+
+display_case_assembly(make_flat = false);

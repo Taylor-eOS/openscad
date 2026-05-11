@@ -11,8 +11,8 @@ module pin_cutout() {
 }
 
 module component_recess(x, y) {
-    translate([x, y, back_th])
-        cylinder(h = 0.2, d = recess_dia, center = true, $fn = 32);
+    translate([x, y, back_th - recess_depth])
+        cylinder(h = recess_depth, d = recess_dia, $fn = 32);
 }
 
 module base_plate() {

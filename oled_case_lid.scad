@@ -15,23 +15,11 @@ module component_recess(x, y) {
         cylinder(h = 0.2, d = recess_dia, center = true, $fn = 32);
 }
 
-module lid_clearance_balls() {
-    for (i = [1:3]) {
-        translate([0, (tab_size / 4) * i, -tab_depth / 2])
-            sphere(d = bump_dia, $fn = 12);
-    }
-}
-
 module corner_tab() {
     union() {
         translate([0, 0, -tab_depth])
             linear_extrude(height = tab_depth)
                 polygon(points = [[0, 0], [tab_size, 0], [0, tab_size]]);
-        for (i = [1:3]) {
-            translate([(tab_size / 4) * i, 0, -tab_depth / 2])
-                sphere(d = bump_dia, $fn = 24);
-        }
-        lid_clearance_balls();
     }
 }
 

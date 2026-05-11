@@ -34,4 +34,3 @@ tab_size = 4.2;
 recess_dia = 3.2;
 recess_pos_x = -1.2;
 recess_pos_y = 2.3;
-bump_dia = lid_clearance;

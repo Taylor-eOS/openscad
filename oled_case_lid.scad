@@ -11,26 +11,23 @@ module pin_cutout() {
 }
 
 module component_recess(x, y) {
-    translate([x, y, 0.1])
+    translate([x, y, back_th])
         cylinder(h = 0.2, d = recess_dia, center = true, $fn = 32);
 }
 
 module corner_tab() {
-    union() {
-        translate([0, 0, -tab_depth])
-            linear_extrude(height = tab_depth)
-                polygon(points = [[0, 0], [tab_size, 0], [0, tab_size]]);
-    }
+    linear_extrude(height = tab_depth)
+        polygon(points = [[0, 0], [tab_size, 0], [0, tab_size]]);
 }
 
 module lid_corner_tabs() {
-    translate([-lid_x / 2, pocket_center_y - lid_y / 2, 0])
+    translate([-lid_x / 2, pocket_center_y - lid_y / 2, back_th])
         rotate([0, 0, 0]) corner_tab();
-    translate([lid_x / 2, pocket_center_y - lid_y / 2, 0])
+    translate([lid_x / 2, pocket_center_y - lid_y / 2, back_th])
         rotate([0, 0, 90]) corner_tab();
-    translate([lid_x / 2, pocket_center_y + lid_y / 2, 0])
+    translate([lid_x / 2, pocket_center_y + lid_y / 2, back_th])
         rotate([0, 0, 180]) corner_tab();
-    translate([-lid_x / 2, pocket_center_y + lid_y / 2, 0])
+    translate([-lid_x / 2, pocket_center_y + lid_y / 2, back_th])
         rotate([0, 0, 270]) corner_tab();
 }
 

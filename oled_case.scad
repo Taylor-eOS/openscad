@@ -25,7 +25,7 @@ module pin_reinforcement() {
 module reinforced_pin() {
     union() {
         pin_shaft();
-        pin_reinforcement(); //Comment out to dimention pins
+        pin_reinforcement();
     }
 }
 
@@ -33,6 +33,13 @@ module mounting_pins() {
     for (px = [-pin_dist_x/2, pin_dist_x/2], py = [bottom_pin_y, top_pin_y]) {
         translate([px, py, front_th]) reinforced_pin();
     }
+}
+
+module gap_filler() {
+    translate([0, filler_y_pos, case_height])
+    rotate([0, -90, 0])
+    linear_extrude(height = filler_width, center = true)
+    polygon(points=[[0,0], [0, -filler_extension], [-filler_height, 0]]);
 }
 
 module display_case_assembly() {
@@ -43,7 +50,7 @@ module display_case_assembly() {
             display_window();
         }
         mounting_pins();
-        //display_window(); //Add to dimention pins
+        gap_filler();
     }
 }
 

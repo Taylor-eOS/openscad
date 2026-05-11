@@ -29,9 +29,14 @@ lid_clearance = 0.18;
 lid_x = inner_x - (lid_clearance * 2);
 lid_y = inner_y - (lid_clearance * 2);
 cutout_depth = 4.1 + (print_margin * 2);
-cutout_width = 10.2 + (print_margin * 2);
+cutout_width = 9.8 + (print_margin * 2);
 recess_dia = 3.3;
 recess_pos_x = 1.2;
 recess_pos_y = 2.3;
 tab_depth = 0.8;
 edge_length_factor = 0.75;
+
+filler_extension = 0.3;
+filler_height = 1.5;
+filler_y_pos = pocket_center_y + (inner_y / 2);
+filler_width = cutout_width - lid_clearance;

@@ -40,18 +40,34 @@ module base_plate() {
 }
 
 module edge_bars() {
-    translate([0, pocket_center_y - (lid_y / 2) + (tab_depth / 2), back_th + tab_depth / 2])
-        cube([lid_x * edge_length_factor, tab_depth, tab_depth], center = true);
-    translate([(lid_x / 2) - (tab_depth / 2), pocket_center_y, back_th + tab_depth / 2])
-        cube([tab_depth, lid_y * edge_length_factor, tab_depth], center = true);
-    translate([(-lid_x / 2) + (tab_depth / 2), pocket_center_y, back_th + tab_depth / 2])
-        cube([tab_depth, lid_y * edge_length_factor, tab_depth], center = true);
+    extended_bar_h = tab_depth + 0.6; 
+    translate([0, pocket_center_y - (lid_y / 2) + (tab_depth / 2), back_th + extended_bar_h / 2])
+        cube([lid_x * edge_length_factor, tab_depth, extended_bar_h], center = true);
+    translate([(lid_x / 2) - (tab_depth / 2), pocket_center_y, back_th + extended_bar_h / 2])
+        cube([tab_depth, lid_y * edge_length_factor, extended_bar_h], center = true);
+    translate([(-lid_x / 2) + (tab_depth / 2), pocket_center_y, back_th + extended_bar_h / 2])
+        cube([tab_depth, lid_y * edge_length_factor, extended_bar_h], center = true);
+}
+
+module snap_cylinder(length, horizontal = true) {
+    rotate(horizontal ? [0, 90, 0] : [90, 0, 0])
+        cylinder(h = length, d = snap_dia, center = true, $fn = 32);
+}
+
+module snap_features() {
+    extended_bar_h = tab_depth + 0.6;
+    snap_z = back_th + extended_bar_h - (snap_dia / 2) - 0.2;
+    translate([(lid_x / 2) - (tab_depth / 2), pocket_center_y, snap_z])
+        snap_cylinder(lid_y * edge_length_factor, false);
+    translate([(-lid_x / 2) + (tab_depth / 2), pocket_center_y, snap_z])
+        snap_cylinder(lid_y * edge_length_factor, false);
 }
 
 module lid_assembly() {
     union() {
         base_plate();
         edge_bars();
+        snap_features();
     }
 }
 

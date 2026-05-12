@@ -36,12 +36,23 @@ module gap_filler() {
 }
 
 module lid_locking_recesses() {
-    translate([0, pocket_center_y - (lid_y / 2) + (side_wall_th / 2), case_height - (tab_depth / 2)])
-        cube([(lid_x * edge_length_factor) + (print_margin * 2), side_wall_th + eps, pocket_height], center = true);
-    translate([(lid_x / 2) - (side_wall_th / 2), pocket_center_y, case_height - (tab_depth / 2)])
-        cube([side_wall_th + eps, (lid_y * edge_length_factor) + (print_margin * 2), pocket_height], center = true);
-    translate([(-lid_x / 2) + (side_wall_th / 2), pocket_center_y, case_height - (tab_depth / 2)])
-        cube([side_wall_th + eps, (lid_y * edge_length_factor) + (print_margin * 2), pocket_height], center = true);
+    extended_pocket_h = pocket_height + 0.6;
+    translate([0, pocket_center_y - (lid_y / 2) + (side_wall_th / 2), case_height - (extended_pocket_h / 2)])
+        cube([(lid_x * edge_length_factor) + (print_margin * 2), side_wall_th + eps, extended_pocket_h], center = true);
+    translate([(lid_x / 2) - (side_wall_th / 2), pocket_center_y, case_height - (extended_pocket_h / 2)])
+        cube([side_wall_th + eps, (lid_y * edge_length_factor) + (print_margin * 2), extended_pocket_h], center = true);
+    translate([(-lid_x / 2) + (side_wall_th / 2), pocket_center_y, case_height - (extended_pocket_h / 2)])
+        cube([side_wall_th + eps, (lid_y * edge_length_factor) + (print_margin * 2), extended_pocket_h], center = true);
+}
+
+module snap_recesses() {
+    snap_z = case_height - (snap_dia / 2) - 0.2;
+    translate([(lid_x / 2) - (side_wall_th / 2), pocket_center_y, snap_z])
+        rotate([90, 0, 0])
+            cylinder(h = (lid_y * edge_length_factor) + (print_margin * 2), d = snap_dia + (print_margin * 2), center = true, $fn = 32);
+    translate([(-lid_x / 2) + (side_wall_th / 2), pocket_center_y, snap_z])
+        rotate([90, 0, 0])
+            cylinder(h = (lid_y * edge_length_factor) + (print_margin * 2), d = snap_dia + (print_margin * 2), center = true, $fn = 32);
 }
 
 module display_case_assembly() {
@@ -51,6 +62,7 @@ module display_case_assembly() {
             inner_pocket();
             display_window();
             lid_locking_recesses();
+            snap_recesses();
         }
         mounting_pins();
         gap_filler();

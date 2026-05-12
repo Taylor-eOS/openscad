@@ -36,12 +36,12 @@ module gap_filler() {
 }
 
 module lid_locking_recesses() {
-    translate([0, pocket_center_y - (lid_y / 2) + (tab_depth / 2), case_height - (tab_depth / 2)])
-        cube([(lid_x * edge_length_factor) + (print_margin * 2), tab_pocket_width, pocket_height], center = true);
-    translate([(lid_x / 2) - (tab_depth / 2), pocket_center_y, case_height - (tab_depth / 2)])
-        cube([tab_pocket_width, (lid_y * edge_length_factor) + (print_margin * 2), pocket_height], center = true);
-    translate([(-lid_x / 2) + (tab_depth / 2), pocket_center_y, case_height - (tab_depth / 2)])
-        cube([tab_pocket_width, (lid_y * edge_length_factor) + (print_margin * 2), pocket_height], center = true);
+    translate([0, pocket_center_y - (lid_y / 2) + (side_wall_th / 2), case_height - (tab_depth / 2)])
+        cube([(lid_x * edge_length_factor) + (print_margin * 2), side_wall_th + eps, pocket_height], center = true);
+    translate([(lid_x / 2) - (side_wall_th / 2), pocket_center_y, case_height - (tab_depth / 2)])
+        cube([side_wall_th + eps, (lid_y * edge_length_factor) + (print_margin * 2), pocket_height], center = true);
+    translate([(-lid_x / 2) + (side_wall_th / 2), pocket_center_y, case_height - (tab_depth / 2)])
+        cube([side_wall_th + eps, (lid_y * edge_length_factor) + (print_margin * 2), pocket_height], center = true);
 }
 
 module display_case_assembly() {

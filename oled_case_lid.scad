@@ -22,12 +22,20 @@ module lid_pin_holes() {
     }
 }
 
+module screw_head_recesses() {
+    for (px = [-pin_dist_x/2, pin_dist_x/2], py = [bottom_pin_y, top_pin_y]) {
+        translate([px, py, -0.1])
+            cylinder(h = screw_head_depth + 0.1, d = screw_head_dia, $fn = 32);
+    }
+}
+
 module base_plate() {
     difference() {
         lid_base();
         pin_cutout();
         component_recess(recess_pos_x, recess_pos_y);
         lid_pin_holes();
+        screw_head_recesses();
     }
 }
 

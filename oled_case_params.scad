@@ -41,8 +41,13 @@ recess_depth = 0.2;
 recess_pos_x = 1.2;
 recess_pos_y = 2.3;
 edge_length_factor = 0.75;
+screw_head_dia = 3.2;
+screw_head_depth = 0.1;
 
 filler_extension = 0.3;
 filler_height = 1.5;
 filler_y_pos = pocket_center_y + (inner_y / 2);
 filler_width = cutout_width - lid_clearance;
+
+dovetail_depth = 1.2;
+dovetail_flare = 0.8;

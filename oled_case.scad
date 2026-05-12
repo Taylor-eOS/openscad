@@ -22,7 +22,7 @@ module mounting_pins() {
                 cylinder(h = pin_height, d = pin_dia, $fn = 32);
                 cylinder(h = flare_height, d1 = flare_dia, d2 = pin_dia, $fn = 32);
             }
-            translate([0, 0, -0.1])
+            translate([0, 0, -eps])
                 cylinder(d = pin_hole_dia, h = pin_height + 0.2, $fn = 32);
         }
     }
@@ -37,11 +37,11 @@ module gap_filler() {
 
 module lid_locking_recesses() {
     translate([0, pocket_center_y - (lid_y / 2) + (tab_depth / 2), case_height - (tab_depth / 2)])
-        cube([(lid_x * edge_length_factor) + (print_margin * 2), tab_width_tol, tab_depth + 0.1], center = true);
+        cube([(lid_x * edge_length_factor) + (print_margin * 2), tab_pocket_width, tab_depth + eps], center = true);
     translate([(lid_x / 2) - (tab_depth / 2), pocket_center_y, case_height - (tab_depth / 2)])
-        cube([tab_width_tol, (lid_y * edge_length_factor) + (print_margin * 2), tab_depth + 0.1], center = true);
+        cube([tab_pocket_width, (lid_y * edge_length_factor) + (print_margin * 2), tab_depth + eps], center = true);
     translate([(-lid_x / 2) + (tab_depth / 2), pocket_center_y, case_height - (tab_depth / 2)])
-        cube([tab_width_tol, (lid_y * edge_length_factor) + (print_margin * 2), tab_depth + 0.1], center = true);
+        cube([tab_pocket_width, (lid_y * edge_length_factor) + (print_margin * 2), tab_depth + eps], center = true);
 }
 
 module display_case_assembly() {

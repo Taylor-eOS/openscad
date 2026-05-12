@@ -29,6 +29,7 @@ flare_dia = pin_dia + 1.4;
 pin_hole_dia = 0.8;
 pin_hole_depth = pin_height - flare_height - 0.3;
 tab_pocket_width = tab_depth + (print_margin * 2);
+pocket_height = tab_depth + print_margin;
 
 lid_clearance = 0.18;
 lid_x = outer_x;

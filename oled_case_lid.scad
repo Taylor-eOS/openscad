@@ -12,7 +12,14 @@ module pin_cutout() {
 
 module component_recess(x, y) {
     translate([x, y, back_th - recess_depth])
-        cylinder(h = recess_depth, d = recess_dia, $fn = 32);
+        cylinder(h = recess_depth + 0.1, d = recess_dia, $fn = 32);
+}
+
+module lid_pin_holes() {
+    for (px = [-pin_dist_x/2, pin_dist_x/2], py = [bottom_pin_y, top_pin_y]) {
+        translate([px, py, -0.1])
+            cylinder(h = back_th + 0.2, d = pin_hole_dia, $fn = 32);
+    }
 }
 
 module base_plate() {
@@ -20,6 +27,7 @@ module base_plate() {
         lid_base();
         pin_cutout();
         component_recess(recess_pos_x, recess_pos_y);
+        lid_pin_holes();
     }
 }
 
